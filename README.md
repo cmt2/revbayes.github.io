@@ -10,12 +10,12 @@ The static version of this site is stored on branch `master`, while the source f
 
 First, you should clone the `source` branch
 
-	git clone https://github.com/revbayes/revbayes.github.io
+	git clone https://github.com/cmt2/revbayes.github.io
 
 After first cloning this repository, you will be on the `source` branch. Then, you should clone the `master` branch into the `_site` directory.
 
 	cd revbayes.github.io
-    git clone -b master https://github.com/revbayes/revbayes.github.io _site
+    git clone -b master https://github.com/cmt2/revbayes.github.io _site
 
 In order to build the site you will need `jekyll`, see instructions below to install.
 
