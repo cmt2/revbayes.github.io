@@ -3,48 +3,53 @@
 # Plot ancestral placental types inferred using two CTMC models of character evolution.
 #
 #
-# authors: Sebastian Hoehna, Will Freyman
+# authors: Sebastian Hoehna, Will Freyman, Carrie Tribble
 #
 ################################################################################
 
-# if you do not have RevGadgets installed, then follow these instructions
-#install.packages("devtools")
-#library(devtools)
-#install_github("GuangchuangYu/ggtree")
-#install_github("revbayes/RevGadgets")
-
 library(RevGadgets)
-library(ggplot2)
 
-tree_file = "output/ase_mk.tree"
-g <- plot_ancestral_states(tree_file, summary_statistic="MAP",
-                      tip_label_size=1,
-                      xlim_visible=NULL,
-                      node_label_size=0,
-                      show_posterior_legend=TRUE,
-                      node_size_range=c(1, 3),
-                      alpha=0.75)
+##### MK Model #####
+file_path <- "output/ase_mk.tree"
+tree <- processAncStates(path = file_path,
+                         state_labels = c("1" = "Epitheliochorial",
+                                          "2" = "Endotheliochorial",
+                                          "3" = "Hemochorial"))
 
-ggsave("Mammals_ASE_MK.pdf", g, width = 11, height = 9)
+plot <- plotAncStatesMAP(t = tree, tree_layout = "circular") +
+        ggplot2::theme(legend.position = c(0.57,0.41))
 
-tree_file = "output/ase_freeK.tree"
-g <- plot_ancestral_states(tree_file, summary_statistic="MAP",
-                      tip_label_size=1,
-                      xlim_visible=NULL,
-                      node_label_size=0,
-                      show_posterior_legend=TRUE,
-                      node_size_range=c(1, 3),
-                      alpha=0.75)
+pdf("ancStatesMap_MK.pdf", height = 20, width = 20)
+plot
+dev.off()
 
-ggsave("Mammals_ASE_FreeK.pdf", g, width = 11, height = 9)
+##### freeK Model #####
 
-tree_file = "output/ase_freeK_RJ.tree"
-g <- plot_ancestral_states(tree_file, summary_statistic="MAP",
-                      tip_label_size=1,
-                      xlim_visible=NULL,
-                      node_label_size=0,
-                      show_posterior_legend=TRUE,
-                      node_size_range=c(1, 3),
-                      alpha=0.75)
+file_path <- "output/ase_freeK.tree"
+tree <- processAncStates(path = file_path,
+                         state_labels = c("1" = "Epitheliochorial",
+                                          "2" = "Endotheliochorial",
+                                          "3" = "Hemochorial"))
 
-ggsave("Mammals_ASE_FreeK_RJ.pdf", g, width = 11, height = 9)
+plot <- plotAncStatesMAP(t = tree, tree_layout = "circular") +
+  ggplot2::theme(legend.position = c(0.57,0.41))
+
+pdf("ancStatesMap_freeK.pdf", height = 20, width = 20)
+plot
+dev.off()
+
+##### RJ Model #####
+
+file_path <- "output/ase_freeK_RJ.tree"
+tree <- processAncStates(path = file_path,
+                         state_labels = c("1" = "Epitheliochorial",
+                                          "2" = "Endotheliochorial",
+                                          "3" = "Hemochorial"))
+                                          #"?" = "?"))
+
+plot <- plotAncStatesMAP(t = tree, tree_layout = "circular") +
+  ggplot2::theme(legend.position = c(0.57,0.41))
+
+pdf("ancStatesMap_RJ.pdf", height = 20, width = 20)
+plot
+dev.off()
