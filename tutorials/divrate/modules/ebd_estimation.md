@@ -227,18 +227,25 @@ If you don't have the R-package `RevGadgets` installed, or if you have trouble w
 Just start `R` in the main directory for this analysis and then type the following commands:
 ```R
 library(RevGadgets)
+library(ape)
+library(ggplot2)
 
 tree <- read.nexus("data/primates_tree.nex")
 
-rev_out <- rev.process.div.rates(speciation_times_file = "output/primates_EBD_speciation_times.log", speciation_rates_file = "output/primates_EBD_speciation_rates.log", extinction_times_file = "output/primates_EBD_extinction_times.log", extinction_rates_file = "output/primates_EBD_extinction_rates.log", tree=tree, burnin=0.25,numIntervals=100)
+primates <- processDivRates(speciation_time_log = "output/primates_EBD_speciation_times.log", 
+                            speciation_rate_log = "output/primates_EBD_speciation_rates.log", 
+                            extinction_time_log = "output/primates_EBD_extinction_times.log", 
+                            extinction_rate_log = "output/primates_EBD_extinction_rates.log", 
+                            burnin=0.25)
 
-pdf("EBD.pdf")
-par(mfrow=c(2,2))
-rev.plot.div.rates(rev_out,use.geoscale=FALSE)
-dev.off()
+# create a results for the plot, and change the x-axis label
+p <- plotDivRates(primates) +
+  xlab("Millions of years ago")
+
+# save the plot
+ggsave("EBD.pdf", plot = p)
 ```
 
-(Note, you may want to add a nice geological timescale to the plot by setting `use.geoscale=TRUE` but then you can only plot one figure per page.)
 
 &#8680; The `Rev` file for performing this analysis: `mcmc_EBD.Rev`
 
