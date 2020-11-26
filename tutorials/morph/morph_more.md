@@ -794,7 +794,6 @@ Make sure that you have the package installed, using
 
 ```{R}
 library(devtools)
-install_github("GuangchuangYu/ggtree")
 install_github("revbayes/RevGadgets")
 ```
 Now that we have our posterior distribution of ancestral states, we want to visualize those results.

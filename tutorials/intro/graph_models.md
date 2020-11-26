@@ -21,7 +21,7 @@ are comprised of modular components that can be assembled in a myriad of ways.
 that users employ to specify their own custom graphical models.
 
 This tutorial is intended to be a gentle introduction on how to use `Rev` to specify graphical models.
-Additionally we'll cover how to use `Rev` to specify the Markov chain Monte Carlo (MCMC) 
+Additionally we'll cover how to use `Rev` to specify the Markov chain Monte Carlo (MCMC)
 algorithms used to perform inference with the model.
 We will focus on a simple linear regression example,
 and use [RevBayes](http://revbayes.com) to estimate the posterior distributions of our parameters.
@@ -35,13 +35,13 @@ Why Graphical Models?
 Most phylogenetic software have default settings that allow a user to run an analysis
 without truly understanding the assumptions of the model.
 [RevBayes](http://revbayes.com), on the other hand, has no defaults and is a complete
-blank slate when started. [RevBayes](http://revbayes.com) requires users to 
+blank slate when started. [RevBayes](http://revbayes.com) requires users to
 fully specify the model they want to use for their analysis.
 This means the learning curve is steep, however there are a number of benefits:
 
 1. Transparency: All the modeling assumptions are explicitly specified in [RevBayes](http://revbayes.com). The `Rev` script that runs an analysis makes these assumptions clear and can be easily shared. The assumptions can easily be modified in the `Rev` script and then the analysis can be rerun to see how changes affect the results. There is no reliance on "defaults" that may change with different versions of the software.
 
-2. Flexibility: Users are not limited by a small set of models the programmers hard coded, instead users can specify their own custom models uniquely tailored to their hypotheses and datasets. 
+2. Flexibility: Users are not limited by a small set of models the programmers hard coded, instead users can specify their own custom models uniquely tailored to their hypotheses and datasets.
 
 3. Modularity: Each model component can be combined with others in an endless number of new ways like a LEGO kit. Testing many complex evolutionary hypotheses require tying different models together. For example, suppose you wish to test how the effect of biographic range on trait evolution changes through time. In [RevBayes](http://revbayes.com) you could simultaneously infer a time-calibrated phylogeny and estimate biogeography-dependent trait evolution using molecular data, biogeographic range data, and morphological data from both fossils and extant lineages.
 
@@ -53,7 +53,7 @@ What is a Graphical Model?
 {% figure graphicalmodel %}
 <img src="figures/graphical_model.png" width="400" />  
 {% figcaption %}
-*Left: a graphical model in which 
+*Left: a graphical model in which
 the observed data points $X_i$ are conditionally independent given $\theta$.
 Right: the same graphical model using plate notation to represent the $N$ repeated $X_i$.
 These graphical models represent the joint probability distribution
@@ -65,11 +65,11 @@ Image from {% citet murphy2012machine %}*
 
 A *graphical model* is a way to represent a joint multivariate probability distribution as a graph.
 Here we mean *graph* in the mathematical sense of a set of nodes (vertices) and edges.
-In a graphical model, the nodes represent variables and the edges represent conditional dependencies among the variables. 
+In a graphical model, the nodes represent variables and the edges represent conditional dependencies among the variables.
 There are three important types
 of variables:
 
-1. Constant nodes: represents a fixed value that will not change. 
+1. Constant nodes: represents a fixed value that will not change.
 2. Stochastic nodes: represents a random variable with a value drawn from a probability distribution.
 3. Deterministic nodes: represents a deterministic transformation of the values of other nodes.
 
@@ -96,10 +96,10 @@ Visual Representation
 
 The statistics literature has developed a rich visual representation for graphical models.
 Visually representing graphical models can be useful for communication and pedagogy.
-We explain the notation used in the visual representation of these models only briefly 
+We explain the notation used in the visual representation of these models only briefly
 (see {% ref legend %}),
 and enourage readers to see {% citet Hoehna2014b %} for more details.
-As we will discuss below, representing graphical models in computer code 
+As we will discuss below, representing graphical models in computer code
 (using the `Rev` language)
 will likely be the most useful aspect of graphical models to most readers.
 
@@ -115,8 +115,8 @@ that are determined by a specific function applied to another variable.
 They can be thought of as variable transformations. d) Observed states
 are placed in clamped stochastic nodes, represented by gray-shaded
 circles. e) Replication over a set of variables is indicated by enclosing
-the replicated nodes in a plate (dashed rectangle). f) Tree plates represent 
-the different classes of nodes in a phylogeny. 
+the replicated nodes in a plate (dashed rectangle). f) Tree plates represent
+the different classes of nodes in a phylogeny.
 The tree topology orders the nodes in the tree plate and
 may be a constant node (as in this example) or a stochastic node (if the
 topology node is a solid circle).
@@ -134,7 +134,7 @@ due to their shared evolutionary history.
 So in a phylogenetic probabilistic model the topology of the tree determines the conditional dependencies among variables. This can be represented as a graphical model as in {% ref phylo_graph %} (left).   
 
 Phylogenetic models are often highly complex with hundreds of variables. Not only do we model
-the conditional dependencies due to shared evolutionary history (the tree topology), 
+the conditional dependencies due to shared evolutionary history (the tree topology),
 but we also commonly model character evolution (nucleotide substitution models, etc.),
 branching processes that determine the times between speciation events (birth-death processes),
 and many other aspects of the evolutionary process.
@@ -156,7 +156,7 @@ Probabilistic Programming
 {:.section}
 
 To describe complex probabilistic models and perform computational tasks with them,
-we need a way to formally specify the models in a computer. 
+we need a way to formally specify the models in a computer.
 Probabilistic programming languages were designed exactly for this purpose.
 A probabilistic programming language is a tool for probabilistic inference that:
 
@@ -166,7 +166,7 @@ A probabilistic programming language is a tool for probabilistic inference that:
 Probabilistic programming languages are being actively developed within
 the statistics and machine learning communities.
 Some of the most common are <a href="http://mc-stan.org/">Stan</a>, <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>, <a href="http://edwardlib.org/">Edward</a>, and <a href="https://docs.pymc.io/">PyMC3</a>.
-While these are all excellent tools, they are all unsuitable for phylogenetic models 
+While these are all excellent tools, they are all unsuitable for phylogenetic models
 since the tree topology itself must be treated as a random variable to be inferred.
 
 
@@ -238,7 +238,7 @@ y = \beta x + \alpha + \epsilon.
 \end{aligned}
 $$
 
-In this model $\beta$ and $\alpha$ are the regression variables (slope and y-intercept, respectively) 
+In this model $\beta$ and $\alpha$ are the regression variables (slope and y-intercept, respectively)
 and $\epsilon$ is an error or noise term.
 We can formulate this as the graphical model
 
@@ -257,7 +257,7 @@ $$
 Here $\mu_y$ is a *deterministic* variable, it is determined by whatever the values
 of $\beta$ and $\alpha$ are. We use the $:=$ assignment operator to designate
 that $\mu_y$ is deterministic. The error or noise term $\epsilon$ is represented
-as a normal distribution where the mean equals $\mu_y$ and the 
+as a normal distribution where the mean equals $\mu_y$ and the
 standard deviation is $\sigma_{\epsilon}$.
 $y$ is a stochastic variable, it has a value that is drawn from a probability distribution.
 This is designated by using the $\sim$ assignment operator.
@@ -268,9 +268,9 @@ Bayesian Linear Regression
 --------------------------
 {:.subsection}
 
-In our linear regression model $\beta$, $\alpha$, and $\sigma_{\epsilon}$ 
+In our linear regression model $\beta$, $\alpha$, and $\sigma_{\epsilon}$
 are the free variables we wish to estimate.
-To perform Bayesian inference, we need some priors! 
+To perform Bayesian inference, we need some priors!
 
 $$
 \begin{aligned}
@@ -292,12 +292,12 @@ $$
 
 Again, these are stochastic variables, so we use the $\sim$ assignment operator.
 For now we will accept these as decent uninformative priors.
-Later in the tutorial we will discuss how the choice of a prior 
+Later in the tutorial we will discuss how the choice of a prior
 can affect the outcome of the analysis.
 
 
 > **Exercise:** <br><br>
-> Using the sticks-and-arrows visual symbols explained in {% ref legend %}, draw 
+> Using the sticks-and-arrows visual symbols explained in {% ref legend %}, draw
 > the linear regression graphical model. See the answer in the expandable box below.
 {:.instruction}
 
@@ -329,7 +329,7 @@ Specifying the Model in `Rev`
 Remember that graphical models are made up of three types of nodes: stochastic, constant, and deterministic nodes.
 In `Rev` we specify the type of node by using a specific assignment operator:
 - Stochastic node: `n ~ dnNormal(0, 1)`
-- Constant node: `n <- 5` 
+- Constant node: `n <- 5`
 - Deterministic node: `n := m + 5`
 
 We will use each of these assignment operators to set up the linear regression model.
@@ -392,7 +392,7 @@ Setting up MCMC in `Rev`
 -----------------------
 {:.subsection}
 
-Here we will use the Metropolis-Hastings MCMC algorithm {% cite Metropolis1953 Hastings1970 %} 
+Here we will use the Metropolis-Hastings MCMC algorithm {% cite Metropolis1953 Hastings1970 %}
 to perform parameter estimation.
 We focus here on providing a simple overview of how to set up and tweak MCMC in RevBayes,
 for a more in depth introduction to MCMC please see the {% page_ref mcmc %} tutorial.
@@ -409,7 +409,7 @@ the entire model into the variable `mymodel`.
 Note that we used the `=` assignment operator. This means that the variable
 `mymodel` is *not* part of the graphical model -- it is not a stochastic, constant, or deterministic
 node. We call this a `Rev` workspace variable. Workspace variables
-are utility variables that we use for any programming task that 
+are utility variables that we use for any programming task that
 is not specifically defining the model.
 Note, that unlike in `R`, in `Rev` the `=` and `<-` assignment operators have very different functions!
 
@@ -423,7 +423,7 @@ moves[1] = mvSlide(beta, delta=0.001, weight=1)
 moves[2] = mvSlide(alpha, delta=0.001, weight=1)
 moves[3] = mvSlide(sigma, delta=0.001, weight=1)
 ```
-Here we used simple slide moves for each variable. 
+Here we used simple slide moves for each variable.
 The slide move proposes new values for the variable by "sliding" its value within a small window
 determined by the `delta` argument.
 RevBayes provides many other types of moves that you will see in other tutorials.
@@ -458,11 +458,34 @@ Improving MCMC Mixing
 {:.section}
 
 > **Exercise:** <br><br>
-> Now open the file `output/linear_regression.log` in Tracer.
+> Now open the file `output/linear_regression.log` in `R` using `RevGadgets`.
 {:.instruction}
+> Install `RevGadgets` if you haven't already:
+```{R}
+library(devtools)
+install_github("revbayes/RevGadgets")
+```
+> Set your working directory to your `RevBayes` directory:
+```{R}
+setwd("~/path_to_files/revbayes_intro_graph_models")
+```
+> Read in your log file
+```{R}
+trace <- readTrace(path = "/output/linear_regression.log")
+```
+> Load the `coda` package (and install if you need to):
+```{R}
+#install.packages("coda")
+library(coda)
+```
+> Plot the trace of the `beta` parameter:
+```{R}
+trace_mcmc <- coda::as.mcmc(trace[[1]])
+coda::traceplot(trace_mcmc[,"beta"])
+```
 You will notice that the MCMC analysis did not converge well:
 {% figure bad %}
-<img src="figures/beta-bad.png" width="400"/>
+<img src="figures/beta_bad_new.png" width="400"/>
 {% figcaption %}
 *The MCMC trace for the `beta` parameter. This analysis never converged.*
 {% endfigcaption %}
@@ -479,17 +502,23 @@ moves[2] = mvSlide(alpha, delta=1, weight=5)
 moves[3] = mvSlide(sigma, delta=1, weight=5)
 ```
 > **Exercise:** <br><br>
-> Rerun the MCMC analysis with these new moves and view the log file in Tracer.
+> Rerun the MCMC analysis with these new moves and view the new log file using `RevGadgets`.
 {:.instruction}
+Plot the `beta` trace as you did above.
+You can also use `RevGadgets` to plot the posterior distributions of parameter estimate:
+```{R}
+trace_burnin <- removeBurnin(trace, 0.1)
+plotTrace(trace_burnin, vars = c("alpha", "beta", "sigma"))
+```
 This analysis looks much better:
 {% figure good %}
-<img src="figures/beta-good.png" width="400"/><img src="figures/param-estimates.png" width="400"/>
+<img src="figures/beta_good_new.png" width="400"/><img src="figures/param_estimates_new.png" width="400"/>
 {% figcaption %}
 *Left: The MCMC trace for the `beta` parameter. This analysis has adequately converged;
 all parameter values have ESS values over 200.
 Right: Posterior parameter estimates from the converged MCMC analysis.
-The y-intercept ($\alpha$) was estimated to be about -2 and the slope 
-($\beta$) was estimated to be about 0.5. 
+The y-intercept ($\alpha$) was estimated to be about -2 and the slope
+($\beta$) was estimated to be about 0.5.
 This closely matches what is observed in {% ref linear %}.
 Moreover, -2 and 0.5 were the true values used to simulate the data.*
 {% endfigcaption %}
@@ -510,11 +539,11 @@ Prior Sensitivity
 Prior distributions are a way to mathematically formalize our
 prior knowledge.
 We used normal distributions as priors for $\alpha$ and $\beta$.
-How did we pick these distributions? 
+How did we pick these distributions?
 {%ref priors %} illustrates the normal distribution with different
 values for the standard deviation.
 Using a smaller standard deviation (0.1) places most of the density
-close to 0. 
+close to 0.
 This sort of prior is appropriate only if we have prior information
 that the parameter's true value is close to 0, so we can call this
 an *informative* prior.
@@ -536,7 +565,7 @@ Compare those results with those shown in {% ref good %}.
 Using informative priors that are incorrect can badly bias the results.
 
 {% figure bad-priors %}
-<img src="figures/priors.png" width="400"/>
+<img src="figures/priors_new.png" width="400"/>
 {% figcaption %}
 *Biased posterior parameter estimates when using overly informative priors.
 The true values were $\alpha = -2$, $\beta = 0.5$, and $\sigma = 0.25$.*
@@ -573,7 +602,7 @@ where different analyses often make use of these different types of models.
 Discriminative (or conditional) models
 involve a response variable conditioned on a predictor variable.
 The model represents the conditional distribution $p(y|x)$
-and so makes fewer assumptions about the data: 
+and so makes fewer assumptions about the data:
 it is not necessary to specify $p(x)$.
 The linear regression example we coded in `Rev` was a discriminative model
 because it conditioned on the observed values of $x$. In other words
@@ -592,10 +621,10 @@ We can set up all these discriminative models in [RevBayes](http://revbayes.com)
 Generative models
 model the entire process used to generate the data.
 So these models represent the joint distribution $p(x, y)$,
-and therefore they must make more assumptions about the data: 
+and therefore they must make more assumptions about the data:
 we need to define $p(x)$.
 This allows for a richer representation of the relations between variables.
-Additionally these models are more powerful; 
+Additionally these models are more powerful;
 they allow us to compute $p(y|x)$ or $p(x|y)$
 and to simulate both $x$ and $y$.
 
@@ -614,7 +643,7 @@ and standard deviation, which we don't get from the discriminative form.
 With the generative model:
 - we can simulate values of both $x$ and $y$,
 - both $x$ and $y$ will need to be clamped to the observed data,
-- and we will need to specify a prior distribution for $x$. 
+- and we will need to specify a prior distribution for $x$.
 
 > **Exercise:** <br><br>
 > Reformulate our linear regression example so that it is a fully generative model:
@@ -640,7 +669,7 @@ Additionally, we now estimate $\mu_x$ and $\sigma_x$ as stochastic variables.*
 
 ### Conclusion
 
-[RevBayes](http://revbayes.com) gives evolutionary biologists the tools to formalize their 
+[RevBayes](http://revbayes.com) gives evolutionary biologists the tools to formalize their
 hypotheses as custom graphical models that represent the specific process
 that generated their data.
 This enables many evolutionary hypotheses
