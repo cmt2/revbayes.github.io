@@ -19,7 +19,7 @@ include_files:
 - data/primates_tree.nex
 - scripts/mcmc_EBD.Rev
 - scripts/mcmc_EBD_Corr.Rev
-- scripts/plot_EBD.R
+- scripts/plot_EBD_Corr.R
 ---
 
 {% include_relative modules/env_overview.md %}
