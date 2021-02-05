@@ -150,9 +150,7 @@ monitors.append( mnExtNewick(filename="output/relaxed_BM.trees", isNodeParameter
 
 {% subsubsection Initializing and Running the MCMC Simulation %}
 
-With a fully specified model, a set of monitors, and a set of moves, we
-can now set up the MCMC algorithm that will sample parameter values in
-proportion to their posterior probability. The `mcmc()` function will
+With a fully specified model, a set of monitors, and a set of moves, we can now set up the MCMC algorithm that will sample parameter values in proportion to their posterior probability. The `mcmc()` function will
 create our MCMC object:
 ```
 mymcmc = mcmc(mymodel, monitors, moves, nruns=2, combine="mixed")
