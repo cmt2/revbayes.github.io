@@ -181,7 +181,7 @@ Next, read in the tree annotated with the branch rates:
 tree <- readTrees("output/relaxed_BM_MAP.tre")
 ```
 
-Finally, plot the tere with the branch rates:
+Finally, plot the tree with the branch rates:
 ```{R}
 plotTree(tree, color_branch_by="branch_rates")
 ```

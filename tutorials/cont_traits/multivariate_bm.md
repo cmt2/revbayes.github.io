@@ -18,6 +18,7 @@ include_files:
 - data/haemulidae_trophic_traits.nex
 - scripts/mcmc_multivariate_BM.Rev
 - scripts/mcmc_relaxed_multivariate_BM.Rev
+- scripts/plot_multivariate_BM.R
 - scripts/plot_relaxed_multivariate_BM.R
 ---
 

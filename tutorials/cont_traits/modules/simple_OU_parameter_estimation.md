@@ -127,15 +127,49 @@ output directory.
 
 &#8680; The `Rev` file for performing this analysis: `mcmc_OU.Rev`
 
-Characters evolving under the OU process will tend toward a stationary distribution, which is a normal distribution with mean $\theta$ and variance $\sigma^2 \div 2\alpha$. Therefore, if rates of evolution are high (or the branches in the tree are relatively long), it can be difficult to estimate $\sigma^2$ and $\alpha$ separately, since they both determine the long-term variance of the process. We can see whether this affects our analysis by examining the _joint posterior distribution_ of the parameters in `Tracer`. When the parameters are positively correlated, we should hesitate to interpret their marginal distributions (_i.e._, don't make inferences about the rate of adaptation or the variance parameter separately).
+We can plot the posterior estimates of `alpha`, `theta`, and `sigma2` in `RevGadgets`. Launch `R` and use the following code.
+
+First, we need to load the R package `RevGadgets`
+```{R}
+library(RevGadgets)
+```
+
+Next, read the MCMC output:
+```{R}
+samples <- readTrace("output/simple_OU.log")
+```
+
+Finally, plot the posterior distribution of the state-dependent rate parameters:
+```{R}
+plotTrace(samples, match="overall_rate")
+```
 
 {% figure ou_figure %}
+<img src="figures/ou_posterior.png" height="50%" width="50%" />
+{% figcaption %}
+Estimates of the parameters of the OU model.
+{% endfigcaption %}
+{% endfigure %}
+
+&#8680; The `R` file for plotting these posteriors: `plot_OU.R`
+
+{% subsubsection Assessing correlations among parameters %}
+
+Characters evolving under the OU process will tend toward a stationary distribution, which is a normal distribution with mean $\theta$ and variance $\sigma^2 \div 2\alpha$. Therefore, if rates of evolution are high (or the branches in the tree are relatively long), it can be difficult to estimate $\sigma^2$ and $\alpha$ separately, since they both determine the long-term variance of the process. We can see whether this affects our analysis by examining the _joint posterior distribution_ of the parameters in `R`, continuing from our previous `RevGadgets` code. When the parameters are correlated, we should hesitate to interpret their marginal distributions (_i.e._, don't make inferences about the rate of adaptation or the variance parameter separately).
+
+```{R}
+library(ggplot2)
+ggplot(samples[[1]], aes(x=alpha, y=sigma2)) + geom_point()
+```
+
+{% figure ou_joint_figure %}
 <img src="figures/ou_joint_posterior.png" height="50%" width="50%" />
 {% figcaption %}
 Estimates of the joint posterior distribution of the rate of adaptation, $\alpha$ (x-axis), and the variance parameter, $\sigma^2$ (y-axis). Note that these parameters are positively correlated.
 {% endfigcaption %}
 {% endfigure %}
 
+&#8680; The `R` file for plotting these posteriors: `plot_OU.R`
 
 
 

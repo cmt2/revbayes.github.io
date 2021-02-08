@@ -15,6 +15,7 @@ include_files:
 - data/trees.nex
 - data/traits.nex
 - scripts/mcmc_OU.Rev
+- scripts/plot_OU.R
 ---
 
 {% section Estimating Evolutionary Optima %}
