@@ -8,7 +8,7 @@
 ################################################################################
 
 outfileName = "results_" + model_name + "/simulated_inference_" + analysis_name + ".csv"
-write(file=outfileName, "simID", "mean_rf", "quantile25", "quantile50", "quantile75", "quantile99", "quantile999", "mean_tl", "var_tl", "entropy", sep=",", append=FALSE)  
+write(file=outfileName, "mean_rf", "quantile25", "quantile50", "quantile75", "quantile99", "quantile999", "mean_tl", "var_tl", "entropy", sep=",", append=FALSE)  
 write(file=outfileName, "\n", sep="\t", append=TRUE)  
 
 #num_post_sims = 10
@@ -43,7 +43,7 @@ for ( i in 1:num_post_sims) {
 
     ## write it to a file
 
-    write(file=outfileName, i, mean_rf, quantile25, quantile50, quantile75, quantile99, quantile999, mean_tl, var_tl, entropy, sep=",", append=TRUE)  
+    write(file=outfileName, mean_rf, quantile25, quantile50, quantile75, quantile99, quantile999, mean_tl, var_tl, entropy, sep=",", append=TRUE)  
     write(file=outfileName, "\n", sep=",", append=TRUE)  
 
 
@@ -90,4 +90,3 @@ write(file=outfileName, "\n", sep=",", append=TRUE)
 
 
 ################### end of empirical calculations ##############################
-

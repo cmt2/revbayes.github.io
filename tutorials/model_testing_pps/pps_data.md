@@ -493,7 +493,9 @@ pps_plots["Mean GC"]
 {% figure pps_mean_gc %}
 <img src="figures/mean_gc.png" width="50%"/> 
 {% figcaption %} 
-The distribution of mean GC values calculated from the simulated data set is shown. The dotted line represents the mean GC calculated from the empirical data set.The Jukes-Cantor model does not adequately describe the empirical data.
+The distribution of mean GC values calculated from the simulated data set is shown. The dotted line represents the mean GC calculated from the empirical data set.
+The red region is the 95% rejection region, and the red plus blue region are the 90% rejection region.
+The Jukes-Cantor model does not adequately describe the empirical data.
 {% endfigcaption %}
 {% endfigure %}
 

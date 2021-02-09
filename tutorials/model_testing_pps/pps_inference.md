@@ -34,7 +34,7 @@ Preparation
 This tutorial expects you have compelted the prerequisite tutorials listed above. 
 It will also expect you to be reasonably familiar with phylogenetic analyses, command line usage and 
 if you want to explore your results, having at least a basic understanding of ```R```. 
-If you run this tutorial all the way through with the single **full_analysis_JC.Rev** script 
+If you run this tutorial all the way through with the single **pps_analysis_JC_inf.Rev** script 
 it takes approximately 20 - 25 minutes depending on your computer. 
 If you work through every line-by-line to get a better understanding it takes approximately 60 minutes.
 
@@ -60,7 +60,7 @@ salient feature of the evolutionary process.
 
 The framework to construct posterior predictive distributions, and
 compare them to the posterior distribution is conveniently built in to
-```RevBayes``` through the $P^{3}$ pipeline {% cite Hohna2017b %}. In this tutorial we will walk you through using this
+`RevBayes` through the $P^{3}$ pipeline {% cite Hohna2017b %}. In this tutorial we will walk you through using this
 functionality to perform a complete posterior predictive simulation on
 an example dataset.
 
@@ -77,7 +77,7 @@ Most statistics proposed for testing model plausibility compare
 data-based characteristics of the original data set to the posterior
 predictive data sets (e.g., variation in GC-content across species). In
 data-based assessments of model fit one compares the empirical data to
-data simulated from samples of the posterior distribution. ```RevBayes```
+data simulated from samples of the posterior distribution. `RevBayes`
 additionally implements test statistics that compare the inferences
 resulting from different data sets (e.g., the distribution of posterior
 probability across topologies). These are called inference-based
@@ -116,10 +116,10 @@ Assessing Model Fit with Posterior Prediction
 
 > ## For your info
 > The entire process of posterior prediction can be executed by using the
-> **full_analysis_JC.Rev** script in the **scripts** folder. If you
-> were to type the following command into ```RevBayes```:
+> **pps_analysis_JC_inf.Rev** script in the **scripts** folder. If you
+> were to type the following command into `RevBayes`:
 ~~~
-> source("scripts/data_pp_analysis_JC.Rev")
+> source("scripts/pps_analysis_JC_inf.Rev")
 ~~~
 > the entire data-based posterior prediction process would run on the
 > example dataset. However, in this tutorial, we will walk through each
@@ -137,13 +137,13 @@ to sample for simulation. This is the normal, and often only, step
 conducted in phylogenetic studies. Here we will specify our dataset,
 evolutionary model, and run a traditional MCMC analysis.
 
-This code is all in the **full_analysis_JC.Rev** file.
+This code is all in the **pps_analysis_JC_inf.Rev** file.
 
 ### Set up the workspace
 
 First, let’s read in our dataset.
 
-{{ "full_analysis_JC.Rev" | snippet:"line","9-11" }}  
+{{ "pps_analysis_JC_inf.Rev" | snippet:"line","10-12" }}  
 
 ~~~
    Successfully read one character matrix from file data/primates_and_galeopterus_cytb.nex
@@ -151,19 +151,19 @@ First, let’s read in our dataset.
 {:.Rev-output}
 
 
-Great, we have our data in ```RevBayes``` now. Next, we'll set up some workspace variables we will need. We can begin by specifying a
+Great, we have our data in `RevBayes` now. Next, we'll set up some workspace variables we will need. We can begin by specifying a
 general name to apply to your analysis. This will be used for future
 output files, so make sure it’s something clear and easy to understand.
 
 
-{{ "full_analysis_JC.Rev" | snippet:"line","12-14" }}  
+{{ "pps_analysis_JC_inf.Rev" | snippet:"line","13-15" }}  
 
 ### Specify the model
 
 Now we’ll need to specify our model Jukes-Cantor in this case. We can do this by
 sourcing the name we gave our model script a few lines ago. 
 
-{{ "MCMC_Simulation.Rev" | snippet:"line","9" }} 
+{{ "pps_MCMC_Simulation.Rev" | snippet:"line","9" }} 
 
 ~~~
    Processing file "scripts/JC_Model.Rev"
@@ -171,36 +171,27 @@ sourcing the name we gave our model script a few lines ago.
 ~~~
 {:.Rev-output}
 
-Now we have our data and our model for our empirical analyses read into ```RevBayes```.
+Now we have our data and our model for our empirical analyses read into `RevBayes`.
 This command will process the JC_Model.Rev script in full. 
-If you want to tweak any of the model parameters, or just want a reminder about how model scripts in ```RevBayes``` work,
+If you want to tweak any of the model parameters, or just want a reminder about how model scripts in `RevBayes` work,
 you can dig a little deeper in the aside box below or revist the {% page_ref ctmc %}.
 
 {% aside JC Model Details %}
-Taking a brief look at some of the details of the **JC_Model.Rev** script. 
+Taking a brief look at some of the details of the **pps_JC_Model.Rev** script. 
 
 A few specific lines we can look at that might be interest, as we are
 using a unrooted tree for this analysis are:
 
-{{ "JC_Model.Rev" | snippet:"line","31-32" }}  
+{{ "pps_JC_Model.Rev" | snippet:"line","31-32" }}  
 
 Here we are specifying that we should use the Jukes-Cantor model, and
 have it applied uniformly to all sites in the dataset. While this
 obviously is not likely to be a good fitting model for most datasets, we
 are using it for simplicity of illustrating the process.
 
-{{ "JC_Model.Rev" | snippet:"line","42-42" }} 
+{{ "pps_tree_model.Rev" | snippet:"line","19-19" }} 
 
-This sets a uniform prior on the tree topology.
-
-{{ "JC_Model.Rev" | snippet:"line","53-54" }} 
-
-This sets an exponential distribution as the branch length prior.
-
-{{ "JC_Model.Rev" | snippet:"line","62-63" }} 
-
-This builds the tree by combining the topology with branch length
-support values.
+This sets a uniform prior on the tree topology, and an exponential prior on the branch lengths.
 
 {% endaside %}
 
@@ -210,11 +201,11 @@ support values.
 Now let’s run MCMC on our empirical dataset, just like a normal
 phylogenetic analysis. We need to set some variables: 
 
-First, we need to setup a counter for our monitors:
-{{ "MCMC_Simulation.Rev" | snippet:"line","11-12" }}
+First, we create the vector of monitors:
+{{ "pps_MCMC_Simulation.Rev" | snippet:"line","12-12" }}
 
 Next, we need to setup the monitors themselves:
-{{ "MCMC_Simulation.Rev" | snippet:"line","14-18" }}
+{{ "pps_MCMC_Simulation.Rev" | snippet:"line","14-18" }}
 
 Next, we need to setup the MCMC object:  
 ~~~
@@ -273,7 +264,7 @@ After the process completes, the results can be found in the
 files, all with the name we provided under the **analysis_name**
 variable, **pps_example** in this case. Since we set the number of runs
 (nruns=2) in our MCMC, there will be two files of each type (.log .trees
-.var) with an _*N* where *N* is the run number. You will also see 3
+.var) with an *N* where *N* is the run number. You will also see 3
 files without any number in their name. These are the combined files of
 the output. These will be the files we use for the rest of the process.
 If you open up one of the combined .var file, you should see that there
@@ -289,11 +280,11 @@ Posterior Predictive Data Simulation
 The next step of posterior predictive simulation is to simulate new
 datasets by drawing samples and parameters from the posterior
 distribution generated from the empirical MCMC anlaysis. This functionality is
-built into the backend of ```RevBayes``` in order to simplify the process. 
+built into the backend of `RevBayes` in order to simplify the process. 
 
-> In the **full_analysis_JC.Rev** script, that is conducted using
+> In the **pps_analysis_JC_inf.Rev** script, that is conducted using
 > the following line of RevScript:
-> ```> source("scripts/PosteriorPredictive_Simulation.Rev")```
+> ```> source("scripts/pps_Simulation.Rev")```
 {:.instruction}
 
 However, we will process each line of this script so that you can better understand 
@@ -302,14 +293,14 @@ what functions are being called.
 First, we read in the trace file of the Posterior Distribution of
 Variables.
 
-{{ "PosteriorPredictive_Simulation.Rev" | snippet:"line","11-12" }}  
+{{ "pps_Simulation.Rev" | snippet:"line","11-12" }}  
 
 Now we call the **posteriorPredictiveSimulation()** function, which
 accepts any valid model of sequence evolution, and output directory, and
 a trace. For each line in the trace, it will simulate a new dataset
 under the specified model.
 
-{{ "PosteriorPredictive_Simulation.Rev" | snippet:"line","14-15" }}  
+{{ "pps_Simulation.Rev" | snippet:"line","14-15" }}  
 
 Now we run the posterior predictive simulation, generating a new dataset
 for each line in the trace file that was read in. This is the part where
@@ -348,10 +339,10 @@ of this process, as you are conducting 100 individual MCMC analyses. In a later 
 how this can be parallelized and sped up dramatically on HPC clusters or servers. However, for now, 
 we will run this locally in serial mode with a low number of generations as an example. 
 
-In the **full_analysis_JC.Rev** script, that is conducted using
+In the **pps_analysis_JC_inf.Rev** script, that is conducted using
 the following line of RevScript:
 
-{{ "full_analysis_JC.Rev" | snippet:"line","33" }}  
+{{ "pps_analysis_JC_inf.Rev" | snippet:"line","33" }}  
 
 However, we will process each line of this script so that you can better understand 
 what functions are being called.
@@ -396,7 +387,7 @@ Calculating the Test Statistics
 -------------------------------
 
 Now we will calculate the test statistics from the empirical data and
-the simulated data sets. Let's go ahead and calculate our test statistics by entering the following lines into ```RevBayes```.
+the simulated data sets. Let's go ahead and calculate our test statistics by entering the following lines into `RevBayes`.
 
 ~~~
 num_post_sims = listFiles(path="output_"+model_name+"/" + analysis_name + "_post_sims").size()
@@ -419,7 +410,7 @@ Progress:
 ~~~
 {:.Rev-output}
 
-These are the same lines used in the **full_analysis_JC.Rev** script.
+These are the same lines used in the **pps_analysis_JC_inf.Rev.Rev** script.
 
 We will take a closer look at these lines but for a more complete discussion of the statistics involved, please
 review {% cite Brown2014 %} {% cite Doyle2015 %}. In general, this script and these
@@ -487,7 +478,7 @@ empirical posterior distributions, we can compare the simulated to the
 empirical to get a goodness-of-fit. One simple way to do this is to
 calculate a posterior predictive *P*-value for each of the test
 statistics of interest. This is done in the
-**full_analysis_JC.Rev** with the following lines :
+**pps_analysis_JC_inf.Rev.Rev** with the following lines :
 
 First, we set our input file names.
 ~~~
@@ -591,54 +582,80 @@ All of the output from these analyses are saved to simple CSV text files. You ca
 empirical values to the distribution of simulated values in anyway that is intuitive for you.
 
 {% figure example %}
-<img src="figures/dist.png">
+<img src="figures/dist.png" width="50%">
 {% figcaption %}
-Example distribution of simulated pps test statistic values with the median value plotted as the green line and the empirical value plotted as the red line. In this case, this test statistic suggests that the model is a poor fit for the data.
+Example distribution of simulated pps test statistic values with the empirical value plotted as the dash line. The red region is the 95% rejection region, and the red plus blue region are the 90% rejection region.
+In this case, this test statistic suggests that the model is a poor fit for the data.
 {% endfigcaption %}
 {% endfigure %}
 
-Let's walk through visualizing one of the test statistic datasets in a very basic ```R``` script so you can get a feel for one way it could be done. 
+Let's walk through visualizing one of the test statistic datasets in a very basic `R` script so you can get a feel for one way it could be done. 
 
-Our data from this analyses is all stored in the **results_JC/** folder. So it would be helpful to set your R workspace to that folder.
-~~~
-setwd("/YOUR/PATH/HERE/results_JC")
-~~~
+Launch `R` and load `RevGadgets`.
+```{R}
+library(RevGadgets)
+```
+Next, specify the name of the model and create the corresponding filenames.
+```{R}
+# specify the name of the model
+model_name <- "JC"
 
-Once that's done, the first thing we'll want to do is to read in our empirical values.
-~~~
-empirical_inference_pps_example <- read.csv("/results_JC/empirical_inference_pps_example.csv", header=TRUE)
-~~~
+# name the directory with the output
+dir <- paste0("results_", model_name, "/")
+dataset_name <- "pps_example"
 
-Next, we'll read in the simulated values. 
+# name the files with the statistics
+simulated_stats_fn <- paste0(dir, "simulated_inference_pps_example.csv")
+observed_stats_fn  <- paste0(dir, "empirical_inference_pps_example.csv")
+```
+Now, read the simulated and observed statistics.
+```{R}
+# read the statistics
+pps_stats <- processPostPredStats(simulated_stats_fn, observed_stats_fn)
+```
+Finally, create the plots, and plot one of the posterior-predictive distributions (in this case, we've chosen the mean GC content, but you could choose any of the statistics).
+```{R}
+# create the plots
+pps_plots <- plotPostPredStats(pps_stats)
 
-~~~
-simulated_inference_pps_example <- read.csv("/results_JC/simulated_inference_pps_example.csv", header=TRUE)
-~~~
-
-Once we have our two datasets imported into ```R```, we can easily create a plot like the example plot above. For this example, we'll plot the
-**mean tree length (mean_tl)** value from these analyses.
-
-First, let's create our histogram plot.
-~~~
-hist(simulated_inference_pps_example$mean_tl, breaks=20)
-~~~
-
-Next, let's add a line showing the median just for a reference.
-~~~
-abline(v=median(simulated_inference_pps_example$mean_tl), col="green", lty=2)
-~~~
-
-Finally, let's plot our empirical value to get a feel for how it compares to our simulated values.
-~~~
-abline(v=empirical_inference_pps_example$mean_tl, col="red", lty=2)
-~~~
+# plot the mean tree length (or any stat by name)
+pps_plots["mean_tl"]
+```
 
 {% figure example %}
-<img src="figures/rexample.png">
+<img src="figures/rexample.png" width="50%">
 {% figcaption %}
-Mean Tree Length test statistic distribution from posterior predictive simulation analyses of the **primates_cytb.nexus** dataset. Green line is the median value of the simulated dataset, red line is the empirical value.
+Mean Tree Length test statistic distribution from posterior predictive simulation analyses of the **primates_cytb.nexus** dataset. 
+The red region is the 95% rejection region, and the red plus blue region are the 90% rejection region; dashed line is the empirical value.
 {% endfigcaption %}
 {% endfigure %}
+
+You can also automate this procedure for each statistic.
+```{R}
+# save all of the plots individually
+for(i in 1:length(pps_plots)) {
+
+  # get the name of this statistic
+  this_pps_stat <- names(pps_plots)[[i]]
+
+  # create the filename
+  this_plot_filename <- paste0(this_pps_stat,".pdf")
+
+  # create the plot
+  pdf(this_plot_filename, height=4)
+  print(pps_plots[[i]])
+  dev.off()
+}
+```
+Alternatively, you can create one file with all of the plots.
+```{R}
+# save all of the plots together
+pdf("pps_combined_inference.pdf", height=4)
+pps_plots
+dev.off()
+```
+
+&#8680; The `R` script for plotting this output: `plot_results_inference.R`
 
 
 Additional Individual Exercises
@@ -649,11 +666,11 @@ Included in the **scripts** folder is a second model script called
 some time now, and run the same analysis, substituting the
 **GTR_Model.Rev** model script for the **JC_Model.Rev** script we used
 in the earlier example. In order to speed this process up, you can duplicate the
-**full_analysis_JC.Rev** and name the new copy **full_analysis_GTR.Rev**. You can then just
+**pps_analysis_JC_inf.Rev.Rev** and name the new copy **pps_analysis_GTR_inf.Rev**. You can then just
 edit the lines in that one script to point to the **GTR_Model.Rev script**, and re-run your with a single command:
 
 ~~~
-source("scripts/full_analysis_GTR.Rev")
+source("scripts/pps_analysis_GTR_inf.Rev")
 ~~~
 
 You should get different results, this is an
@@ -674,7 +691,7 @@ suggest about the fit of the specified model to the dataset.
     statistic distributions to identify poor fit?
 
 > ## For your consideration
-> In this tutorial you have learned how to use ```RevBayes``` to assess the
+> In this tutorial you have learned how to use `RevBayes` to assess the
 > fit of a substitution model to a given sequence alignment. As you have
 > discovered, the observed data should be plausible under the posterior
 > predictive simulation if the model is reasonable. In phylogenetic
@@ -684,7 +701,7 @@ suggest about the fit of the specified model to the dataset.
 > does not mean it is an appropriate model for the data. This distinction
 > becomes both more critical and less obvious in modern analyses, where
 > the number of genes often number in the thousands. Posterior predictive
-> simulation in ```RevBayes```, allows you to easily check model fit for a
+> simulation in `RevBayes`, allows you to easily check model fit for a
 > large number of genes by using global summaries to check the posterior
 > predictive distributions with a comfortable goodness-of-fit style
 > framework.
@@ -698,7 +715,7 @@ The process described above is for a single gene or alignment. However,
 batch processing a large number of genes with this method is a
 relatively straight forward process.
 
-```RevBayes``` has built in support for MPI so running ```RevBayes``` on more
+`RevBayes` has built in support for MPI so running `RevBayes` on more
 than a single processor, or on a cluster is as easy as calling it with
 openmpi.
 
@@ -708,7 +725,7 @@ For example:
 
 would run the entire posterior predictive simulation analysis on a
 single dataset using 16 processors instead of a single processor. Use of
-the MPI version of ```RevBayes``` will speed up the process dramatically.
+the MPI version of `RevBayes` will speed up the process dramatically.
 
 Setting up the **full_analysis.Rev** script to cycle through a large
 number of alignments is relatively simple as well. One easy way is to

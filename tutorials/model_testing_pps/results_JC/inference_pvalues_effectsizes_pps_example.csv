@@ -1,0 +1,9 @@
+Statistic,Lower 1-tailed,Upper 1-tailed,Two-tailed,Midpoint,Effect Size
+mean_rf,1,0,0,1,inf
+quantile25,1,0.01980198,0.03960396,0.990099,7.142136
+quantile50,1,0,0,1,7.835699
+quantile75,1,0,0,1,8.638897
+quantile99,1,0,0,1,13.00907
+quantile999,1,0,0,1,117.7535
+mean_tl,1,0,0,1,1897.488
+var_tl,0,1,0,0,243.6609

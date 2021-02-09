@@ -1,0 +1,2 @@
+mean_rf,quantile25,quantile50,quantile75,quantile99,quantile999,mean_tl,var_tl,entropy
+4.263183,2,4,6,10,12,3.132421,0.003017173,55.31128
