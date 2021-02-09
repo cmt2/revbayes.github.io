@@ -248,7 +248,7 @@ After the process completes, the results can be found in the
 files, all with the name we provided under the **analysis_name**
 variable, **pps_example** in this case. Since we set the number of runs
 (nruns=2) in our MCMC, there will be two files of each type (.log .trees
-.var) with an _*N* where *N* is the run number. You will also see 3
+.var) with an *N* where *N* is the run number. You will also see 3
 files without any number in their name. These are the combined files of
 the output. These will be the files we use for the rest of the process.
 If you open up one of the combined .var file, you should see that there
@@ -454,22 +454,75 @@ test statistic calculation output.
 -   pvalues_pps_example.csv
 
 If you have these 3 files, and there are results in them, you can go
-ahead and quit ‘RevBayes‘.
+ahead and quit `RevBayes`.
 ```
     q()
+```
+
+Now, launch `R` and load `RevGadgets`.
+```{R}
+library(RevGadgets)
+```
+Next, specify the name of the model and create the corresponding filenames.
+```{R}
+# specify the name of the model
+model_name <- "JC"
+
+# name the directory with the output
+dir <- paste0("results_", model_name, "/")
+dataset_name <- "pps_example"
+
+# name the files with the statistics
+simulated_stats_fn <- paste0(dir, "simulated_data_", dataset_name, ".csv")
+observed_stats_fn  <- paste0(dir, "empirical_data_", dataset_name, ".csv")
+```
+Now, read the simulated and observed statistics.
+```{R}
+# read the statistics
+pps_stats <- processPostPredStats(simulated_stats_fn, observed_stats_fn)
+```
+Finally, create the plots, and plot one of the posterior-predictive distributions (in this case, we've chosen the mean GC content, but you could choose any of the statistics).
+```{R}
+# create the plots
+pps_plots <- plotPostPredStats(pps_stats)
+
+# plot the mean GC (or any stat by name)
+pps_plots["Mean GC"]
 ```
 
 {% figure pps_mean_gc %}
 <img src="figures/mean_gc.png" width="50%"/> 
 {% figcaption %} 
-The distribution of mean GC values calculated
-from the simulated data set is shown. The dotted line represents the
-mean GC calculated from the empirical data set.The Jukes-Cantor model
-does not adequately describe the empirical data. This plot was generated
-in `R`using the **scripts/plot_results.R** script.
+The distribution of mean GC values calculated from the simulated data set is shown. The dotted line represents the mean GC calculated from the empirical data set.The Jukes-Cantor model does not adequately describe the empirical data.
 {% endfigcaption %}
 {% endfigure %}
 
+You can also automate this procedure for each statistic.
+```{R}
+# save all of the plots individually
+for(i in 1:length(pps_plots)) {
+
+  # get the name of this statistic
+  this_pps_stat <- names(pps_plots)[[i]]
+
+  # create the filename
+  this_plot_filename <- paste0(this_pps_stat,".pdf")
+
+  # create the plot
+  pdf(this_plot_filename, height=4)
+  print(pps_plots[[i]])
+  dev.off()
+}
+```
+Alternatively, you can create one file with all of the plots.
+```{R}
+# save all of the plots together
+pdf("pps_combined.pdf", height=4)
+pps_plots
+dev.off()
+```
+
+&#8680; The `R` script for plotting this output: `plot_results.R`
 
 You can get an estimate of how the model performed by examining the
 *P*-values in the  **data_pvalues_effectsizes_pps_example.csv** file. In this
@@ -481,11 +534,9 @@ be a poor fit for our data. However, it’s a good example of the
 sensitivity of this method, showing how relatively short runtimes and a
 low number of generations will still detect poor fit.
 
-You can also use `R`to plot the results. Run the
+<!-- You can also use `R`to plot the results. Run the
 `R`script **scripts/plot_results.R**. This will generate a
-pdf plot for every test statistic. See {% ref pps_mean_gc %} and its legend to learn how to interpret these plots.
-
-
+pdf plot for every test statistic. See {% ref pps_mean_gc %} and its legend to learn how to interpret these plots. -->
 
 
 {% section Exercises %}
@@ -576,4 +627,3 @@ can scale this process up to multiple genes and spread the computational
 time across several cores to speed it up.
 
 {% endaside %}
-
