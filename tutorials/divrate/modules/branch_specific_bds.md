@@ -281,11 +281,14 @@ tree <- as.treedata(read.tree(my_tree_file))
 
 tree2 <- processBranchData(tree, branch_data, summary = "median")
 
-p <- ggtree(tree2) +
-  aes(colour = avg_lambda) +
-  scale_color_continuous(paste0("Posterior median \nspeciation rate"), 
-                         low="blue", high="green") + 
-  theme(legend.position=c(0.2,0.80), legend.background=element_blank())
+p <- plotTree(tree = tree2,
+              node_age_bars = FALSE,
+              node_pp = F,
+              tip_labels = FALSE,
+              color_branch_by = "avg_lambda",
+              line_width = 0.8,
+              branch_color = c("blue","green")) +
+     theme(legend.position=c(.1, .9))
 
 
 ggsave("figures/BDS.png", plot = p)
