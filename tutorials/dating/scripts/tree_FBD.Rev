@@ -46,12 +46,16 @@ constraints = v(clade_ursinae)
 timetree ~ dnConstrainedTopology(tree_dist, constraints=constraints)
 
 # Specify moves on the tree and node times #
-#moves.append( mvNarrow(timetree, weight=n_taxa) )
+# moves.append( mvNNI(timetree, weight=n_taxa) )
+# moves.append( mvGPR(timetree, weight=n_taxa) )
 moves.append( mvFNPR(timetree, weight=n_taxa/5.0) )
 moves.append( mvCollapseExpandFossilBranch(timetree, origin_time, weight=6.0) )
 
 moves.append( mvNodeTimeSlideUniform(timetree, weight=n_taxa) )
 moves.append( mvRootTimeSlideUniform(timetree, origin_time, weight=5.0) )
+
+# moves.append( mvSubtreeScale(timetree, weight=5.0) )
+# moves.append( mvNodeTimeSlideBeta(timetree, weight=5.0) )
 
 # Monitor the age of Ursinae #
 age_ursinae := tmrca(timetree, clade_ursinae)

@@ -21,7 +21,10 @@ for(i in 1:n_branches){
     moves.append( mvScale(branch_rates[i], lambda=0.5, tune=true, weight=1.0) )
 }
 
-# add a move on the branch rate vector #
-moves.append( mvVectorScale(branch_rates, lambda=0.5, tune=true, weight=4.0) )
-moves.append( mvRateAgeBetaShift(tree=timetree, rates=branch_rates, tune=true, weight=n_taxa) )
+# add a move on the branch rate vector, mean, and tree #
+moves.append( mvUpDownScale(lambda=0.5, tune=true, weight=10.0) )
+moves[ moves.size() ].addVariable(timetree, up=false)
+moves[ moves.size() ].addVariable(branch_rates_mean, up=true)
 
+moves.append( mvRateAgeProposal(tree=timetree, tune=true, weight=n_taxa) )
+moves[ moves.size() ].addRates(branch_rates)

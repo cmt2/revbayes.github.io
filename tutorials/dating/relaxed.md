@@ -10,7 +10,7 @@ include_all: false
 include_files:
 - scripts/clock_relaxed_exponential.Rev
 - scripts/clock_relaxed_lognormal.Rev
-
+- scripts/plot_dating_ex2_tree.R
 index: false
 redirect: false
 ---
@@ -151,11 +151,11 @@ Let's also have a quick look at the trees.
 {% figure fig_tree %}
 <img src="figures/bears_relaxed.mcc.tre.png" width="700" /> 
 {% figcaption %} 
-The FigTree window. To open your tree you can use File > Open. Select Node Labels to view the relative node ages.
+The `RevGadgets` plot (made using `plot_dating_ex2_tree.R`).
 {% endfigcaption %}
 {% endfigure %}
 
-If you open the trees generated using the global versus relaxed clock models in FigTree, you can compare them to see whether these models made an important difference to the inferred topology and/or relative node ages. Another useful thing to look at are the posterior probabilities obtained for different nodes. Go to the options under Node Labels and select Display > posterior.
+If you open the trees generated using the global versus relaxed clock models, you can compare them to see whether these models made an important difference to the inferred topology and/or relative node ages. Another useful thing to look at are the posterior probabilities obtained for different nodes. Use `node_age_bars_colored_by = "posterior"` or `node_labels = "posterior"` with the `RevGadgets` function `plotTree` to display the posterior probabilities of each clade.
 
 
 
@@ -202,5 +202,3 @@ Don't forget to update the filenames of the output (*e.g.,* from `bears_relaxed_
 * [Estimating speciation times using node dating]({{ base.url }}/tutorials/dating/nodedate)
 
 For further options and information about clock models see Tracy Heath's tutorial [Relaxed Clocks & Time Trees]({{ base.url }}/tutorials/clocks/).
-
-

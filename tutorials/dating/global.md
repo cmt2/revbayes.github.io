@@ -13,6 +13,7 @@ include_files:
 - scripts/clock_global.Rev
 - scripts/sub_GTRG.Rev
 - scripts/tree_BD.Rev
+- scripts/plot_dating_ex1_tree.R
 index: false
 redirect: false
 ---
@@ -297,12 +298,25 @@ In addition to evaluating the performance and sampling of an MCMC run using nume
 
 Ultimately, we are interested in summarizing the sampled trees and branch times given that our MCMC has sampled all of the important parameters in proportion to their posterior probabilities. RevBayes includes some functions for summarizing the tree topology and other tree parameters, including the `mccTree` that we used in this exercise.
 
->Open the program FigTree and load MCC tree file `bears_global.mcc.tre`.
+> Use `RevGadgets` to plot the MCC tree file `bears_global.mcc.tre`.
+>
+> Launch `R` and run the following code.
+> ```{R}
+> # load the 
+> library(RevGadgets)
+> 
+> # read the tree
+> tree <- readTrees("output/bears_global.mcc.tre")
+> 
+> # plot the tree
+> plotTree(tree, node_age_bars=TRUE)
+> ```
+> See the `RevGadgets` script `plot_dating_ex1_tree.R` for an example of saving this figure as a pdf!
 
 {% figure fig_tree %}
 <img src="figures/bears_global.mcc.tre.png" width="700" /> 
 {% figcaption %} 
-The FigTree window. To open your tree you can use File > Open. Select Node Labels to view the relative node ages.
+The `RevGadgets` plot. The bars represent the age (and associated uncertainty) of each node, relative to the root age of 1.
 {% endfigcaption %}
 {% endfigure %}
 
@@ -320,4 +334,3 @@ In the following exercise we'll relax the assumption of a global molecular clock
 ### Further reading
 
 For further options and information about clock models see Tracy Heath's tutorial [Relaxed Clocks & Time Trees]({{ base.url }}/tutorials/clocks/).
-
