@@ -16,9 +16,9 @@ In this tutorial, we use the 66 vertebrate phylogenies and (log) body-size datas
 
 {% subsection Read the data %}
 
-We begin by deciding which of the 66 vertebrate datasets to use. Here, we assume we are analyzing the first dataset (_Acanthuridae_), but you should feel free to choose any of the datasets.
+We begin by deciding which of the 66 vertebrate datasets to use. Here, we assume we are analyzing the first dataset (Cetacea), but you should feel free to choose any of the datasets.
 ```
-dataset <- 1
+dataset <- 11
 ```
 
 Now, we read in the (time-calibrated) tree corresponding to our chosen dataset.
@@ -129,9 +129,10 @@ output directory.
 
 We can plot the posterior estimates of `alpha`, `theta`, and `sigma2` in `RevGadgets`. Launch `R` and use the following code.
 
-First, we need to load the R package `RevGadgets`
+First, we need to load the R packages `RevGadgets` and `gridExtra` (to arrange the parameters in one plot).
 ```{R}
 library(RevGadgets)
+library(gridExtra)
 ```
 
 Next, read the MCMC output:
@@ -139,13 +140,20 @@ Next, read the MCMC output:
 samples <- readTrace("output/simple_OU.log")
 ```
 
+Next, we create the plot objects:
+```{R}
+alpha_plot <- plotTrace(samples, vars="alpha")[[1]]
+theta_plot <- plotTrace(samples, vars="theta")[[1]]
+sigma_plot <- plotTrace(samples, vars="sigma2")[[1]]
+```
+
 Finally, plot the posterior distribution of the state-dependent rate parameters:
 ```{R}
-plotTrace(samples, match="overall_rate")
+grid.arrange(alpha_plot, theta_plot, sigma_plot, nrow=1)
 ```
 
 {% figure ou_figure %}
-<img src="figures/ou_posterior.png" height="50%" width="50%" />
+<img src="figures/ou_posterior.png" height="100%" width="100%" />
 {% figcaption %}
 Estimates of the parameters of the OU model.
 {% endfigcaption %}

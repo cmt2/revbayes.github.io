@@ -13,7 +13,7 @@
 #######################
 
 ### Select the dataset to analyze
-dataset <- 3
+dataset <- 11
 
 ### Read in the trees
 T <- readTrees("data/trees.nex")[dataset]

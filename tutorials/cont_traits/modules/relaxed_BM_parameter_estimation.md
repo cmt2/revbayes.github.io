@@ -18,9 +18,9 @@ In this tutorial, we use the 66 vertebrate phylogenies and (log) body-size datas
 
 {% subsection Read the data %}
 
-We begin by deciding which of the 66 vertebrate datasets to use. Here, we assume we are analyzing the first dataset (_Acanthuridae_), but you should feel free to choose any of the datasets.
+We begin by deciding which of the 66 vertebrate datasets to use. Here, we assume we are analyzing the first dataset (Cetacea), but you should feel free to choose any of the datasets.
 ```
-dataset <- 1
+dataset <- 11
 ```
 
 Now, we read in the (time-calibrated) tree corresponding to our chosen dataset.
@@ -189,7 +189,7 @@ plotTree(tree, color_branch_by="branch_rates")
 &#8680; The `R` script for plotting this output: `plot_relaxed_BM.R`
 
 {% figure fig_relaxed_BM %}
-<img src="figures/relaxed_BM.png" width="100%" height="100%" />
+<img src="figures/relaxed_BM.png" width="75%" height="75%" />
 {% figcaption %}
 **Estimated branch-specific rates of Brownian-motion evolution.**
 Here we show the results of our example analysis.
