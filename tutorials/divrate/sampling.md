@@ -22,15 +22,15 @@ Outline
 -------
 
 This tutorial describes how to specify different models of incomplete
-taxon sampling {% cite Hoehna2011} {% cite Hoehna2014a %} for estimating
+taxon sampling {% cite Hoehna2011 Hoehna2014a %} for estimating
 diversification rates in `RevBayes` {% cite Hoehna2016b %}. Incomplete taxon
 sampling, if not modeled correctly, severely biases diversification-rate
-parameter estimates {% cite Cusimano2010} {% cite Hoehna2011 %}. Specifically, we will
+parameter estimates {% cite Cusimano2010 Hoehna2011 %}. Specifically, we will
 discuss *uniform*, *diversified*, and *empirical* taxon sampling. All
 analyses in this tutorial will focus on diversification rate estimation
 through-time and use a birth-death process where diversification rates
 vary episodically which we model by piecewise constant rates `RevBayes`
-{% cite Hoehna2015a} {% cite May2016 %}. The probabilistic graphical model is given
+{% cite Hoehna2015a May2016 %}. The probabilistic graphical model is given
 only once for this tutorial as an overview. The model itself does not
 change between the different analyses; only the assumptions of
 incomplete taxon sampling. For each analysis you will estimate
@@ -105,13 +105,12 @@ in many large scale phylogenies.
 Open the tree ‘data/primates.tre‘ in
 `FigTree`.
 
-> ![](figures/EBD_scenarios.png) 
-> Two scenarios of
-birth-death models. On the left we show constant diversification. On the
-right we show an example of an episodic birth-death process where rates
-are constant in each time interval (epoch). The top panel of this figure
-shows example realization under the given rates. 
-{:.figure}
+{% figure name %}
+<img src ="figures/EBD_scenarios.png" />
+{% figcaption %}
+Two scenarios of birth-death models. On the left we show constant diversification. On the right we show an example of an episodic birth-death process where rates are constant in each time interval (epoch). The top panel of this figure shows example realization under the given rates.
+{% endfigcaption %}
+{% endfigure %}
 
 Episodic Birth-Death Model
 ==========================
@@ -125,25 +124,24 @@ Please read the [Diversification Rates Through
 Time](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Episodic_Tutorial/RB_DiversificationRate_Episodic_Tutorial.pdf)
 tutorial for more detailed information about the model.
 
-We have included in Figure [fig:EBD] again the cartoon of episodic
+We have included in {% ref graphicalmodel %} again the cartoon of episodic
 birth-death process with piecewise constant diversification rates. As
 mentioned above, diversification rate estimates are biased when only a
 fraction of the species is included and the sampling scheme is not
 accommodated appropriately
-{% cite Cusimano2010} {% cite Hoehna2011} {% cite Cusimano2012} {% cite Hoehna2014a %}. Hence, the
+{% cite Cusimano2010 Hoehna2011 Cusimano2012 Hoehna2014a %}. Hence, the
 diversification rate through time model will be an excellent example to
 study the impact of the assumed incomplete sampling strategy on
 diversification rates.
 
-> ![](figures/graphical_model_EBD.png) 
-> A graphical model
-with the outline of the `Rev` code. On the left we see the graphical
-model describing the correlated (Brownian motion) model for
-rate-variation through time. On the right we show the correspond `Rev`
-commands to instantiate this model in computer memory. This figure gives
-a complete overview of the model that we use here in this analysis.
+{% figure graphicalmodel %}
+<img src ="figures/graphical_model_EBD.png" />
+{% figcaption %}
+A graphical model
+with the outline of the `Rev` code. On the left we see the graphical model describing the correlated (Brownian motion) model for rate-variation through time. On the right we show the correspond `Rev` commands to instantiate this model in computer memory. This figure gives a complete overview of the model that we use here in this analysis.
+{% endfigcaption %}
+{% endfigure %}
 
-{:.figure}
 
 We additionally include the graphical model representing the episodic
 birth-death process with autocorrelated diversification rates. This
@@ -333,62 +331,63 @@ Exercise 1
 -   Visualize the rate through time using
     `R`and `Rev`Gadgets.
 
-> ![](figures/uniform.png) 
-> Resulting diversification rate
-estimations when using 20 intervals and assuming uniform taxon sampling.
-You should create similar plots for the other sampling schemes and
-compare the rates through time. 
-{:.figure}
+{% figure uniform %}
+<img src="figures/uniform.png" width="50%"/>
+{% figcaption %}
+Resulting diversification rate estimations when using 20 intervals and assuming uniform taxon sampling. You should create similar plots for the other sampling schemes and
+compare the rates through time.
+{% endfigcaption %}
+{%endfigure %}
 
 Summarizing and plotting diversification rates through time
 -----------------------------------------------------------
 
 When the analysis is complete, you will have the monitored files in your
 output directory. You can then visualize the rates through time using
-`R`using our package `Rev`Gadgets. If you don’t have the
-R-package `Rev`Gadgets installed, or if you have trouble with the
+`R` using our package `RevGadgets`. If you don’t have the
+R-package `RevGadgets` installed, or if you have trouble with the
 package, then please read the separate tutorial about the package.
 
 Just start `R`in the main directory for this analysis and
 then type the following commands:
 
     library(RevGadgets)
+    library(ggplot2)
+    
+    rates <- processDivRates(speciation_time_log = "output/primates_uniform_speciation_times.log",
+                             speciation_rate_log = "output/primates_uniform_speciation_rates.log",
+                             extinction_time_log = "output/primates_uniform_extinction_times.log",
+                             extinction_rate_log = "output/primates_uniform_extinction_rates.log")
+    
+    p <- plotDivRates(rates) +
+      xlab("Millions of years ago")
+    
+    ggsave("figures/uniform.png", p)library(RevGadgets)
 
-    tree <- read.nexus("data/primates.tre")
-    files <- c("output/primates_uniform_speciation_times.log", "output/primates_uniform_speciation_rates.log", "output/primates_uniform_extinction_times.log", "output/primates_uniform_extinction_rates.log")
 
-    rev_out <- rev.process.output(files,tree,burnin=0.25,numIntervals=100)
-
-    pdf("uniform.pdf")
-    par(mfrow=c(2,2))
-    rev.plot.output(rev_out)
-    dev.off()
-
-You can see the resulting plot in Figure [fig:EBD_Results].
+You can see the resulting plot in {% ref uniform %}.
 
 Diversified Taxon Sampling
 ==========================
 
 In the previous analysis we assumed that species were sampled uniformly.
 However, this assumption is very often violated
-{% cite Cusimano2010} {% cite Hoehna2011 %}. For example, the primate phylogeny that we
+{% cite Cusimano2010 Hoehna2011 %}. For example, the primate phylogeny that we
 use in this tutorial includes one species for almost all genera. Thus,
 we had selected the species for the study neither uniformly nor randomly
 but instead by including one species per genera and hence maximizing
 diversity. This sampling scheme is called *diversified* taxon sampling
 {% cite Hoehna2011 %}.
 
-> ![](figures/diversified-sampling.png) 
-> Example of
-diversified taxon sampling. a) An example phylogeny showing that all
-species after a certain time are not sampled. b) The cumulative
-probability of a speciation event occurring as a function of time. Here
-we see that the highest probability for a speciation event is more
-recently. 
-{:.figure}
+{% figure diversified-sampling %}
+<img src="figures/diversified-sampling.png" />
+{% figcaption %}
+Example of diversified taxon sampling. a) An example phylogeny showing that all species after a certain time are not sampled. b) The cumulative probability of a speciation event occurring as a function of time. Here we see that the highest probability for a speciation event is more recently.
+{% endfigcaption %}
+{% endfigure %}
 
-Figure [fig:DiversifiedSampling] shows an example of diversified
-sampling. The example shows the same tree as in Figure [fig:BDP] where
+{% ref diversified-sampling %} shows an example of diversified
+sampling. The example shows the same tree as in {% ref diversified-sampling %} where
 5 species are sampled. In fact, here we sampled 5 species so that every
 group is included and the most recent speciation events are excluded
 (not sampled).
@@ -432,7 +431,7 @@ Empirical Taxon Sampling
 Unfortunately, *diversified* taxon sampling was derived under a strict
 mathematical concept that assumes all species that speciated before a
 given time were included and all other species were discarded (not
-sampled); see Figure [fig:DiversifiedSampling]. The *diversified*
+sampled); see {%ref diversified-sampling %}. The *diversified*
 sampling strategy is clearly to restrictive to be realistic and can bias
 parameter estimates too {% cite Hoehna2014a %}. As another alternative we apply
 an *empirical* taxon sampling strategy that uses empirical information
@@ -440,20 +439,18 @@ on the clade relationships and speciation times of the missing species.
 For example, in the primate phylogeny we know the crown age of
 Hominoidea and know that 19 additional speciation events must have
 happened between the crown age of the Hominoidea and the present time to
-accommodate the 19 missing species (see
-Figure [fig:EmpiricalSampling]). In fact, we can obtain for all larger
+accommodate the 19 missing species [see
+{% ref primates %}]. In fact, we can obtain for all larger
 groups the crown ages and the number of missing species and thus narrow
 down with empirical evidence the times when these missing speciation
 events have happened.
 
-> ![](figures/primates.png) 
-> Cartoon of empirical taxon
-sampling. The triangle in the phylogeny depict clades with missing
-species. To illustrate the point we have written the names of higher
-taxa on the right with the number of species belonging to them. From
-this number of taxa in the clade we can compute how many species are
-missing per clade and which crown age the clade. 
-{:.figure}
+{% figure primates %}
+<img src ="figures/primates.png" />
+{% figcaption %}
+Cartoon of empirical taxon sampling. The triangle in the phylogeny depict clades with missing species. To illustrate the point we have written the names of higher taxa on the right with the number of species belonging to them. From this number of taxa in the clade we can compute how many species are missing per clade and which crown age the clade.
+{% endfigcaption %}
+{% endfigure %}
 
 In your phylogeny you can count the number of species belonging to a
 given clade and thus compute how many species are missing for this
