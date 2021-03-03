@@ -289,10 +289,9 @@ the different sampling schemes.
 Uniform Taxon Sampling
 ======================
 
-In our first analysis we will assume *uniform* taxon sampling [see
-@Hoehna2011} {% cite Hoehna2014a]. Uniform taxon sampling is the oldest and
+In our first analysis we will assume *uniform* taxon sampling [see {%citet Hoehna2011 Hoehna2014a %}]. Uniform taxon sampling is the oldest and
 most basic technique to include incomplete taxon sampling
-{% cite Nee1994b} {% cite Yang1997 %}. Uniform taxon sampling corresponds to the
+{% cite Nee1994b Yang1997 %}. Uniform taxon sampling corresponds to the
 assumption that every species has the same probability $\rho$ to be
 included (*i.e.,*sampled) in our study.
 Imagine flipping a coin that has the probability $\rho$ to show up
@@ -487,9 +486,7 @@ happened (between the crown age and the present). This integral of the
 probability density of a speciation event is exactly the same as one
 minus the cumulative distribution function of a speciation event,
 $$F(t|N(t_1)=1,t_1\leq t \leq T) = 1 - \frac{1-P(N(T)>0|N(t)=1)\exp{(r(t,T))}}{1-P(N(T)>0|N(t_1)=1)\exp{(r(t_1,T))}} \label{spec_dist}$$
-which was previously derived by @Hoehna2014a [Equation (6)] (see also
-@Yang1997 [Equation (3)] for constant rates and @Hoehna2013
-[Equation (8)]).
+which was previously derived by {% cite Hoehna2014a %} [Equation (6)]. See also {% cite Yang1997 %} [Equation (3)] for constant rates and {% cite Hoehna2013 %} [Equation (8)]).
 
 Let us define $\mathbb{K}$ as the set of missing species and
 $|\mathbb{K}|$ the number of clades with missing species. In our example
