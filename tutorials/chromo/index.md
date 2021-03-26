@@ -204,7 +204,7 @@ section, however, we'll set up and run a simple RevBayes analysis
 using the ChromEvol model before moving on to the more complex models.
 
 {% figure fig:chromevol_simple %}
-<img src="figures/ChromEvol_simple.png"> 
+<img src="figures/ChromEvol_simple.svg"> 
 {% figcaption %}
 Maximum a posteriori
 ancestral chromosome number estimates for *Aristolochia* inferred using
@@ -443,10 +443,23 @@ specified with the monitors.
 
 Now we will plot the results of the MCMC analysis using the `RevGadgets`
 R package. Start R and set your working directory to the
-`RB_Chromsome_Evolution_Tutorial` directory. Now run the command to
+`RB_Chromosome_Evolution_Tutorial` directory. Now run the command to
 generate {% ref fig:chromevol_simple %} below. There are many options
 to customize the look of the plot, for options take a look inside the R
 script.
+
+```r
+library(RevGadgets)
+library(ggplot2)
+library(tidytree)
+
+fpath <- "output/ChromoSSE_final.tree"
+tree <- processAncStates(fpath)
+
+p <- plotAncStatesPie(tree)
+
+ggsave("figures/ChromEvol_simple.svg", p)
+```
 
 
 ### Next Steps

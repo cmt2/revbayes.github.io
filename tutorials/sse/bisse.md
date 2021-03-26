@@ -400,7 +400,29 @@ A visualization of the ancestral states estimated under the BiSSE model.
 
 {% endaside %}
 
+{% subsection Summarizing Parameter Estimates in RevGadgets %}
 
+When the analysis is complete, we can summarize the outputs in RevGadgets. See the results in {% ref bisse-estimates %}.
+
+Start `R`in the main directory and type the following commands.
+
+```R
+library(RevGadgets)
+
+tr <- readTrace("output/primates_BiSSE_activity_period.log")[[1]]
+
+pdata <- processMuSSE(tr)
+p <- plotMuSSE(pdata)
+
+ggsave("figures/BiSSE_estimates.png", p)
+```
+
+{% figure bisse-estimates %}
+<img src ="figures/BiSSE_estimates.png" width="60%" />
+{% figcaption %}
+Summary of parameter estimates of the BiSSE analysis in RevGadgets.
+{% endfigcaption %}
+{% endfigure %}
 
 {% subsection Summarizing Parameter Estimates | subsec_summary %}
 
