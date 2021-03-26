@@ -38,54 +38,6 @@ speciation and extinction rates through-time using Markov chain Monte
 Carlo (MCMC) and assess the impact of incomplete taxon sampling as well
 as the sampling scheme.
 
-Requirements
-------------
-
-We assume that you have read and hopefully completed the following
-tutorials:
-
--   [Getting
-    started](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_Getting_Started/RB_Getting_Started.pdf)
-
--   [Very Basic Introduction to
-    `Rev`](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_Intro_Tutorial/RB_Intro_Tutorial.pdf)
-
--   [General Introduction to the `Rev`
-    syntax](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_Rev_Tutorial/RB_Rev_Tutorial.pdf)
-
--   [General Introduction to MCMC using an archery
-    example](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_MCMC_Archery_Tutorial/RB_MCMC_Archery_Tutorial.pdf)
-
--   [General Introduction to MCMC using a coin-flipping
-    example](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_MCMC_Binomial_Tutorial/RB_MCMC_Binomial_Tutorial.pdf)
-
--   [Basic Diversification Rate
-    Estimation](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Tutorial/RB_DiversificationRate_Tutorial.pdf)
-
--   [Diversification Rates Through
-    Time](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Episodic_Tutorial/RB_DiversificationRate_Episodic_Tutorial.pdf)
-
-Note that the [`Rev` basics
-tutorial](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_Intro_Tutorial/RB_Intro_Tutorial.pdf)
-introduces the basic syntax of `Rev` but does not cover any phylogenetic
-models. We tried to keep this tutorial very basic and introduce all the
-language concepts and theory on the way. You may only need the [`Rev`
-syntax
-tutorial](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_Rev_Tutorial/RB_Rev_Tutorial.pdf)
-for a more in-depth discussion of concepts in `Rev`.
-
-For this tutorial it is especially important that you have read the two
-tutorials on diversification rate estimation: [Basic Diversification
-Rate Estimation
-tutorial](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Tutorial/RB_DiversificationRate_Tutorial.pdf)
-and [Diversification Rates Through Time
-tutorial](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Episodic_Tutorial/RB_DiversificationRate_Episodic_Tutorial.pdf).
-Specifically the [Diversification Rates Through Time
-tutorial](https://github.com/revbayes/revbayes_tutorial/raw/master/tutorial_TeX/RB_DiversificationRate_Episodic_Tutorial/RB_DiversificationRate_Episodic_Tutorial.pdf)
-present the underlying diversification model and thus foundation for
-this tutorial. Here we will build on the tutorial by modifying the
-assumptions of incomplete taxon sampling in different ways.
-
 Data and files
 ==============
 
@@ -104,13 +56,6 @@ in many large scale phylogenies.
 
 Open the tree ‘data/primates.tre‘ in
 `FigTree`.
-
-{% figure name %}
-<img src ="figures/EBD_scenarios.png" />
-{% figcaption %}
-Two scenarios of birth-death models. On the left we show constant diversification. On the right we show an example of an episodic birth-death process where rates are constant in each time interval (epoch). The top panel of this figure shows example realization under the given rates.
-{% endfigcaption %}
-{% endfigure %}
 
 Episodic Birth-Death Model
 ==========================
@@ -362,7 +307,7 @@ then type the following commands:
     p <- plotDivRates(rates) +
       xlab("Millions of years ago")
     
-    ggsave("figures/uniform.png", p)library(RevGadgets)
+    ggsave("figures/uniform.png", p)
 
 
 You can see the resulting plot in {% ref uniform %}.
